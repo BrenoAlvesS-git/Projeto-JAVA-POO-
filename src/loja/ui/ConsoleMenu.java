@@ -2,6 +2,7 @@ package src.loja.ui;
 import java.util.Scanner;
 public class ConsoleMenu {
     private Scanner scanner = new Scanner(System.in);
+
     public void iniciar(){
         int opcao;
         do {
@@ -33,6 +34,20 @@ public class ConsoleMenu {
     }
 
     public void exibirmenu(){
+        System.out.println("---------MENU---------");
+        System.out.println("1-Cadastrar Produto");
+        System.out.println("2-Cadastrar Cliente");
+        System.out.println("3-Alterar Cliente");
+        System.out.println("Criar nota de compras");
+        System.out.println("Listar produtos");
+        System.out.println("Listar Clientes");
+        System.out.println("0-Sair"); 
+        System.out.println("---------FIM----------");
+    }
 
+    public void cadastrarCliente(){
+        
     }
 }
+
+
