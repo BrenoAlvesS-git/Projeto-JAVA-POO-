@@ -1,4 +1,4 @@
-package src.loja.ui;
+package loja.ui;
 import java.util.Scanner;
 public class ConsoleMenu {
     private Scanner scanner = new Scanner(System.in);
@@ -26,6 +26,7 @@ public class ConsoleMenu {
                 case 6:System.out.println("Opção listar clientes");
                     break;
                 case 0:System.out.println("Opção De sair d");
+                    break;
                 default:
                     break;
             }
@@ -46,7 +47,7 @@ public class ConsoleMenu {
     }
 
     public void cadastrarCliente(){
-        
+
     }
 }
 

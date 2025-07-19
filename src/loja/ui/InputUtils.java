@@ -1,4 +1,4 @@
-package src.loja.ui;
+package loja.ui;
 
 public class InputUtils {
     
