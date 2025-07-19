@@ -1,6 +1,6 @@
 package src.loja.model.cliente;
 
-public class PessoaJuridica expends Cliente{
+public class PessoaJuridica extends Cliente{
 
     private String cnpj;
 
