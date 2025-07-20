@@ -1,6 +1,6 @@
 package loja.model.produto;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+
 
     public class Produto {
 

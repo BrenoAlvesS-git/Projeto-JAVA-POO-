@@ -35,7 +35,7 @@ public class InputUtils {
                 return preco;
 
             } catch (NumberFormatException e) {
-                // Se a conversão falhar, este bloco é executado.
+                // Se a conversão `new BigDecimal(input)` falhar, este bloco é executado.
                 System.out.println("Erro: Formato de número inválido. Use um ponto como separador decimal (ex: 25.99).");
             }
         }
