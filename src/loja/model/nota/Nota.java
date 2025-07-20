@@ -1,7 +1,14 @@
-package loja.model.nota;
-import java.time.*;
-import loja.model.cliente.*;
+// Adicione TODOS estes imports no topo do seu arquivo
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.time.LocalDateTime; // Mudei para LocalDateTime (veja o motivo abaixo)
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import loja.model.cliente.Cliente;
+import loja.model.produto.Produto;
+
 
    public class Nota {
        private String id;
@@ -28,12 +35,12 @@ import java.math.BigDecimal;
        //adicionar o iem
        public void adicionarItem(Produto produto, int quantidade){
            //verificar se a quantidade naop e nula
-           if(produto.getEstoque()<=0){
+           if(produto.getEstoque()< quantidade){
                throw new IllegalArgumentException("A quantidade pedida e maior do que o estoque tem.");
            }
           ItemNota novoItem = new ItemNota(produto,quantidade);
            //adiciono os itens na lista vazia
-           this.itens = new ArrayList<>();
+           this.itens.add(novoItem);
            //atualizo o estoque
            produto.setEstoque(produto.getEstoque()-quantidade);
        }
@@ -43,8 +50,8 @@ import java.math.BigDecimal;
        public BigDecimal calcularSubTotal(){
            BigDecimal subTotal = BigDecimal.ZERO; //BASICAMENTE ESTOU FAZENDO COM QUE A VARIAVEL RECEBA ZERO SO QUE EM BIGDECIMAL
            //vou fazer um for passando por todos os valores da lista e soma-los
-           for(Item itemNota : this.itens){ //for each
-               subtotal = subtotal.add(item.getValorDoItem());//pega o valor de cada item e soma
+           for(ItemNota itemNota : this.itens){ //for each
+               subTotal = subTotal.add(item.getValorDoItem());//pega o valor de cada item e soma
            }
            return subTotal;
        }
@@ -57,13 +64,13 @@ import java.math.BigDecimal;
                BigDecimal precoFinalUnitario = item.getproduto().calcularPrecoFinal();
 
                //converte de int para big
-               BigDecimal quantidade = BigDecimal.valueOf(item.getQuantidade)):
+               BigDecimal quantidade = BigDecimal.valueOf(item.getQuantidade()):
 
                //valor total para esse item
                BigDecimal valorTotalDoItem = precoFinalUnitario.multiply(quantidade);
 
                //adiciona o valor desse item ao geral da nota
-               valorTotal = valorTotal.add(ValorTotalDoaItem);
+               valorTotal = valorTotal.add(ValorTotalDoItem);
            }
            return valorTotal;
        }
