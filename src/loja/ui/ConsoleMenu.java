@@ -1,6 +1,11 @@
 package loja.ui;
-import java.util.Scanner;
+import java.math.BigDecimal;
+import java.util.*;
+import loja.model.produto.Produto; 
+import java.math.BigDecimal;
+
 public class ConsoleMenu {
+    private List<Produto> produtosCadastrados = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
 
     public void iniciar(){
@@ -13,11 +18,13 @@ public class ConsoleMenu {
 
             switch (opcao) {
                 case 1:System.out.println("Opção de cadastrar Produtop");
-                    
+                    cadastrarProduto();
                     break;
-                case 2:System.out.println("Opção de alterar produto");
+                case 2:System.out.println("Opção cadastrar Cliente");
+                    cadastrarCliente();
                     break;
                 case 3:System.out.println("Opção alterar cliente");
+
                     break;
                 case 4:System.out.println("Opção criar nota da compra");
                     break;
@@ -25,7 +32,7 @@ public class ConsoleMenu {
                     break;
                 case 6:System.out.println("Opção listar clientes");
                     break;
-                case 0:System.out.println("Opção De sair d");
+                case 0:System.out.println("Opção De sair");
                     break;
                 default:
                     break;
@@ -47,8 +54,23 @@ public class ConsoleMenu {
     }
 
     public void cadastrarCliente(){
-
+        String nome     = InputUtils.lerString("Digite o nome: ");
+        String endereco = InputUtils.lerString("Digite o endereço: ");
+        String telefone = InputUtils.lerString("Digite o telefone: ");
+        System.out.println("Cliente Cadastrado");
+        System.out.println("Nome: "+ nome +" Endereço: "+endereco+" Telefone: "+ telefone);
     }
+    public void cadastrarProduto(){
+        String nomeProduto = InputUtils.lerString("Digite o nome do produto: ");
+        String codigo      = InputUtils.lerString("Digite o codigo do produto: ");
+        BigDecimal preco   = InputUtils.lerPreco("Digite o valor do produto: ");
+        BigDecimal estoque = InputUtils.lerPreco("Digite o estoque desse produto: ");
+
+        Produto novoProduto = new Produto(codigo, nomeProduto, preco, estoque);
+        this.produtosCadastrados.add(novoProduto);
+    }
+
+
 }
 
 

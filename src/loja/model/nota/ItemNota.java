@@ -11,20 +11,15 @@ public class ItemNota {
 
 
     public ItemNota(Produto produto, int quantidade){
-
         this.produto = produto;
 
         this.quantidade = quantidade;
 
     }
 
-
-
 //metodos
 
 //get
-
-
 
     public Produto getProduto() {
 
@@ -32,18 +27,11 @@ public class ItemNota {
 
     }
 
-
-
     public int getQuantidade() {
 
         return quantidade;
 
     }
-
-
-
-
-
 //Calculo do valor do item
 
     public BigDecimal getValorDoItem() {

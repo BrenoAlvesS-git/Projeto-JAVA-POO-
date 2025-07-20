@@ -1,18 +1,16 @@
-// Adicione TODOS estes imports no topo do seu arquivo
+package loja.model.nota;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.time.LocalDateTime; // Mudei para LocalDateTime (veja o motivo abaixo)
+import java.time.*; // Mudei para LocalDateTime
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import loja.model.cliente.Cliente;
 import loja.model.produto.Produto;
 
 
    public class Nota {
        private String id;
-       private LocalDate dataDeEmissao;
+       private LocalDateTime dataDeEmissao;
        private Cliente cliente;
        private List<ItemNota> itens;
 
@@ -28,21 +26,22 @@ import loja.model.produto.Produto;
            this.cliente = cliente;
            this.itens = new ArrayList<>(); //criando a lista vazia de itens
            this.id  = UUID.randomUUID().toString(); //gerando ID unica
-           this.dataDeEmissao = LocalDate.now(); //hora da emissao da nota
+           this.dataDeEmissao = LocalDateTime.now(); //hora da emissao da nota
 
        }
 
        //adicionar o iem
        public void adicionarItem(Produto produto, int quantidade){
            //verificar se a quantidade naop e nula
-           if(produto.getEstoque()< quantidade){
+           BigDecimal quantidadeEmBigDecimal = BigDecimal.valueOf(quantidade);
+           if(produto.getEstoque().compareTo(quantidadeEmBigDecimal) < 0){
                throw new IllegalArgumentException("A quantidade pedida e maior do que o estoque tem.");
            }
           ItemNota novoItem = new ItemNota(produto,quantidade);
            //adiciono os itens na lista vazia
            this.itens.add(novoItem);
            //atualizo o estoque
-           produto.setEstoque(produto.getEstoque()-quantidade);
+           produto.setEstoque(produto.getEstoque().subtract(quantidadeEmBigDecimal));
        }
 
 
@@ -51,7 +50,7 @@ import loja.model.produto.Produto;
            BigDecimal subTotal = BigDecimal.ZERO; //BASICAMENTE ESTOU FAZENDO COM QUE A VARIAVEL RECEBA ZERO SO QUE EM BIGDECIMAL
            //vou fazer um for passando por todos os valores da lista e soma-los
            for(ItemNota itemNota : this.itens){ //for each
-               subTotal = subTotal.add(item.getValorDoItem());//pega o valor de cada item e soma
+               subTotal = subTotal.add(itemNota.getValorDoItem());//pega o valor de cada item e soma
            }
            return subTotal;
        }
@@ -61,18 +60,18 @@ import loja.model.produto.Produto;
            BigDecimal total = BigDecimal.ZERO;
            for(ItemNota item : this.itens){
                //se for produto digital retorna sem frete, se for fisico retorna o frete
-               BigDecimal precoFinalUnitario = item.getproduto().calcularPrecoFinal();
+               BigDecimal precoFinalUnitario = item.getProduto().calcularPrecoFinal();
 
                //converte de int para big
-               BigDecimal quantidade = BigDecimal.valueOf(item.getQuantidade()):
+               BigDecimal quantidade = BigDecimal.valueOf(item.getQuantidade());
 
                //valor total para esse item
                BigDecimal valorTotalDoItem = precoFinalUnitario.multiply(quantidade);
 
                //adiciona o valor desse item ao geral da nota
-               valorTotal = valorTotal.add(ValorTotalDoItem);
+               total = total.add(valorTotalDoItem);
            }
-           return valorTotal;
+           return total;
        }
 
 
@@ -83,7 +82,7 @@ import loja.model.produto.Produto;
            return id;
        }
 
-       public LocalDate getDataDeEmissao() {
+       public LocalDateTime getDataDeEmissao() {
            return dataDeEmissao;
        }
 
@@ -115,7 +114,7 @@ import loja.model.produto.Produto;
                            "Produto: %-20s | Qtd: %d | Preço Unit.: R$ %.2f | Total Item: R$ %.2f",
                            item.getProduto().getNome(),
                            item.getQuantidade(),
-                           item.getProduto().getPreco(),
+                           item.getProduto().calcularPrecoFinal(),
                            item.getValorDoItem()
                    );
                    System.out.println(linhaDoItem);

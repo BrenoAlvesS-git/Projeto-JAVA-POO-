@@ -36,10 +36,11 @@ import java.time.LocalDate;
 
         //sets atualizam
         public void setCodigo(String codigo){ //
-            this.codigo = codigo;
             if(codigo==null||codigo.trim().isEmpty()){
                 throw new IllegalArgumentException("O codigo do produto não pode ser nulo ou vazio.");
             }
+            this.codigo = codigo;
+            
         }
 
         public void setNome(String nome){ //prevenir strings vazias
