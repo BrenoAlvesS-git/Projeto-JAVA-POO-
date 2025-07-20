@@ -1,4 +1,4 @@
-package src.loja.model.nota;
+package loja.model.nota;
 
 public class Nota {
     

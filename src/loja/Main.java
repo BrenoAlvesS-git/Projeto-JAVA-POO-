@@ -1,4 +1,4 @@
-//package src;
+package loja;
 import java.time.*;
 import loja.ui.ConsoleMenu;
 public class Main{  

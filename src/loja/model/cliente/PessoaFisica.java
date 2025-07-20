@@ -1,4 +1,4 @@
-package src.loja.model.cliente;
+package loja.model.cliente;
 
 public class PessoaFisica extends Cliente{
     private String cpf;
