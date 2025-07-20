@@ -1,4 +1,7 @@
 package loja.model.nota;
+import java.time.*;
+import loja.model.cliente.*;
+import java.math.BigDecimal;
 
    public class Nota {
        private String id;

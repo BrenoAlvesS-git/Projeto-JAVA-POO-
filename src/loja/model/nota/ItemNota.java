@@ -1,8 +1,11 @@
 package loja.model.nota;
-
+import java.time.LocalDate;
+import loja.model.produto.*;
+import java.math.BigDecimal;
 public class ItemNota {
     private Produto produto;
 
+    
     private int quantidade;
 
 
