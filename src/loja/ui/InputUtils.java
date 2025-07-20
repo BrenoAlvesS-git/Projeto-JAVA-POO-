@@ -10,6 +10,10 @@ public class InputUtils {
         System.out.println(texto);
         return scanner.nextLine();
     }
+    public static void pausarParaContinuar() {
+    System.out.print("\nPressione Enter para continuar...");
+    scanner.nextLine(); 
+}
      public static BigDecimal lerPreco(String mensagem) {
         while (true) { // Inicia um loop infinito que só será quebrado por um 'return'.
             System.out.print(mensagem);

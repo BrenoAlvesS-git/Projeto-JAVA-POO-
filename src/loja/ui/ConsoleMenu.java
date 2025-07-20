@@ -33,7 +33,7 @@ public class ConsoleMenu {
                     alterarCliente();
                     break;
                 case 4:System.out.println("Opção criar nota da compra");
-
+                    criarNota();
                     break;
                 case 5:System.out.println("Opção listar produtos");
                     listarProdutos();
@@ -106,6 +106,7 @@ public class ConsoleMenu {
             }
         }
         System.out.println("\n==========-FIM DOS CLIENTES-==========");
+        InputUtils.pausarParaContinuar();
     }
 
     public void listarProdutos(){
@@ -121,9 +122,9 @@ public class ConsoleMenu {
                 System.out.println("Codigo: " + produto.getCodigo());
                 System.out.println("Preço base: "+ formatoMoeda.format(produto.getPreco()));
                 System.out.println("Estoque: "+produto.getEstoque());
-
+                i++;
                 if(produto instanceof ProdutoFisico pf){
-                    System.out.println("Frente; " + formatoMoeda.format(pf.getPreco()));
+                    System.out.println("Frente; " + formatoMoeda.format(pf.getFrete()));
                 }else if(produto instanceof ProdutoDigital pd){
                     System.out.println("Link: " + pd.getLinkDoProduto());
                 }else if(produto instanceof ProdutoPerecivel pp){
@@ -132,6 +133,7 @@ public class ConsoleMenu {
                 }
             }
         }
+        InputUtils.pausarParaContinuar();
     }
     public void alterarCliente(){
         System.out.println("Alteração de dados do cliente");
@@ -141,7 +143,7 @@ public class ConsoleMenu {
         }
         listarClientes();
         System.out.println("Digite o número do cliente: ");
-        int escCliente = scanner.nextInt();
+        int escCliente = scanner.nextInt()-1;
         if(escCliente < 0 || escCliente >= clientesCadastrados.size()){
             System.out.println("ERRO SELEÇÃO INVÁLIDA");
             return;
@@ -185,7 +187,7 @@ public class ConsoleMenu {
         }
         listarClientes();
         System.out.print("Digite o número do cliente: ");
-        int indCliente = scanner.nextInt();
+        int indCliente = scanner.nextInt() - 1;
         scanner.nextLine();
         if(indCliente < 0 || indCliente >= clientesCadastrados.size()){
             System.out.println("Erro de seleção");
@@ -198,7 +200,7 @@ public class ConsoleMenu {
             System.out.println("Adicionando a nota");
             listarProdutos();
             System.out.print("Digite o numero do produto que deseja adcionar: ");
-            int indProduto = scanner.nextInt();
+            int indProduto = scanner.nextInt() - 1;
             scanner.nextLine();
             if(indProduto < 0 || indProduto >= produtosCadastrados.size()){
                 System.out.println("Seleção invalida");
@@ -222,6 +224,8 @@ public class ConsoleMenu {
 
         this.notasEmitidas.add(novaNota);
         System.out.println("Nota criada com sucesso");
+
+        novaNota.exibirResumo();
     }
 }
 
