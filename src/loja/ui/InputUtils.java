@@ -1,6 +1,8 @@
 package loja.ui;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.*;
 import java.util.Scanner;
 
 public class InputUtils {
@@ -14,7 +16,26 @@ public class InputUtils {
     System.out.print("\nPressione Enter para continuar...");
     scanner.nextLine(); 
 }
-     public static BigDecimal lerPreco(String mensagem) {
+    public static LocalDate lerData(String texto){
+        DateTimeFormatter formataData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        while(true){
+            System.out.print(texto);
+            String input = scanner.nextLine().trim();
+            if(input.isEmpty()){
+                System.out.println("Erro, data vazia");
+                continue;
+            }
+            try{
+                LocalDate date = LocalDate.parse(input,formataData);
+                return date;
+            }catch(DateTimeParseException e){
+                System.out.println("Formato invalido");
+            }
+
+        }
+    }
+
+    public static BigDecimal lerPreco(String mensagem) {
         while (true) { // Inicia um loop infinito que só será quebrado por um 'return'.
             System.out.print(mensagem);
             String inputDoUsuario = scanner.nextLine().trim().replace(',', '.'); // remove espaços e troca vírgula por ponto

@@ -1,11 +1,13 @@
 package loja.ui;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import loja.model.produto.*;
 import loja.model.cliente.*;
 import loja.model.nota.Nota;
+
 
 
 public class ConsoleMenu {
@@ -23,25 +25,32 @@ public class ConsoleMenu {
             scanner.nextLine();
 
             switch (opcao) {
-                case 1:System.out.println("Opção de cadastrar Produtop");
+                case 1:
                     cadastrarProduto();
                     break;
-                case 2:System.out.println("Opção cadastrar Cliente");
+                case 2:
                     cadastrarCliente();
                     break;
-                case 3:System.out.println("Opção alterar cliente");
+                case 3:
                     alterarCliente();
                     break;
-                case 4:System.out.println("Opção criar nota da compra");
+                case 4:
                     criarNota();
                     break;
-                case 5:System.out.println("Opção listar produtos");
+                case 5:
                     listarProdutos();
                     break;
-                case 6:System.out.println("Opção listar clientes");
+                case 6:
                     listarClientes();
                     break;
-                case 0:System.out.println("Opção De sair");
+                case 7:
+                    alterarProduto();
+                    break;
+                case 8: 
+                    listarNotas();
+                    break;
+                case 0:
+                    System.out.println("Adeus");
                     break;
                 default:
                     break;
@@ -58,35 +67,84 @@ public class ConsoleMenu {
         System.out.println("4-Criar nota de compras");
         System.out.println("5-Listar produtos");
         System.out.println("6-Listar Clientes");
+        System.out.println("7-Alterar Produto");
+        System.out.println("8-Exibir notas");
         System.out.println("0-Sair"); 
         System.out.println("---------FIM----------");
     }
 
     public void cadastrarCliente(){
-        String id       = InputUtils.lerString("Digite o ID: ");
+
+        Cliente novoCliente = null;
+        //String id       = InputUtils.lerString("Digite o ID: ");
         String nome     = InputUtils.lerString("Digite o nome: ");
         String endereco = InputUtils.lerString("Digite o endereço: ");
         String telefone = InputUtils.lerString("Digite o telefone: ");
+        String id = UUID.randomUUID().toString();
+        
+        System.out.println("Qual tipo de cliente deseja cadastrar?\n");
+        System.out.println("1-Pessoa Física\n2-Pessoa Jurídica");
+        int escolha = scanner.nextInt();
+        scanner.nextLine();
+        if(escolha == 1){
+            System.out.print("Digite o CPF: ");
+            String cpf = scanner.nextLine();
+            novoCliente = new PessoaFisica(id, nome, endereco, telefone, cpf);
+        }else if(escolha == 2){
+            System.out.print("Digite o CNPJ: ");
+            String cnpj = scanner.nextLine();
+            novoCliente = new PessoaJuridica(id, nome, endereco, telefone, cnpj);
+        }else{
+            System.out.println("Escolha invalida");
+            return;
+        }
+        this.clientesCadastrados.add(novoCliente);
         System.out.println("Cliente Cadastrado");
         System.out.println("Nome: "+ nome +" Endereço: "+endereco+" Telefone: "+ telefone);
-        Cliente novoCliente = new Cliente(id,nome,endereco,telefone);
-        this.clientesCadastrados.add(novoCliente);
+        
     }
 
 
     public void cadastrarProduto(){
+        System.out.println("Qual tipo de produto deseja cadastrar?\n");
+        System.out.println("1- Produto Fisico");
+        System.out.println("2- Produto Digital");
+        System.out.println("3- Produto perecível");
+        System.out.print("Escolha a opção: ");
+        int tipo = scanner.nextInt();
+        scanner.nextLine();
+
         String nomeProduto = InputUtils.lerString("Digite o nome do produto: ");
         String codigo      = InputUtils.lerString("Digite o codigo do produto: ");
         BigDecimal preco   = InputUtils.lerPreco("Digite o valor do produto: ");
         BigDecimal estoque = InputUtils.lerPreco("Digite o estoque desse produto: ");
-
-        Produto novoProduto = new Produto(codigo, nomeProduto, preco, estoque);
+        Produto novoProduto = null;
+        switch (tipo) {
+            case 1:
+                BigDecimal frete = InputUtils.lerPreco("Digite o valor do frete: ");
+                novoProduto = new ProdutoFisico(codigo, nomeProduto, preco, estoque, frete);
+                break;
+            case 2:
+                String link = InputUtils.lerString("Digite o link do produto: ");
+                novoProduto = new ProdutoDigital(codigo, nomeProduto, preco, estoque, link);
+                break;
+            case 3:
+                LocalDate data = InputUtils.lerData("Digite a data");
+                novoProduto = new ProdutoPerecivel(codigo, nomeProduto, preco, estoque, data);
+                break;
+            default:
+                System.out.println("Tipo invalido");
+                break;
+        }
+        if(novoProduto != null){
         this.produtosCadastrados.add(novoProduto);
+        System.out.println("Produto adicionado!\n\n");
+        }
     }
 
 
     public void listarClientes(){
-        System.out.println("==========-Clientes cadastrados-==========");
+        System.out.println("\n==========-Clientes cadastrados-==========\n");
         if(clientesCadastrados.isEmpty()){
             System.out.println("Nenhum cliente cadastrado");
         }else {
@@ -105,12 +163,12 @@ public class ConsoleMenu {
                 }
             }
         }
-        System.out.println("\n==========-FIM DOS CLIENTES-==========");
+        System.out.println("\n==========-FIM DOS CLIENTES-==========\n");
         InputUtils.pausarParaContinuar();
     }
 
     public void listarProdutos(){
-        System.out.println("==========-Produtos cadastrados-==========");
+        System.out.println("\n==========-Produtos cadastrados-==========\n");
         if(produtosCadastrados.isEmpty()){
             System.out.println("Nenhum produto cadastrado");
         }else{
@@ -177,6 +235,7 @@ public class ConsoleMenu {
                 
         }
         System.out.println("Cliente alterado com sucesso!");
+        InputUtils.pausarParaContinuar();
     }
 
     public void criarNota(){
@@ -226,7 +285,86 @@ public class ConsoleMenu {
         System.out.println("Nota criada com sucesso");
 
         novaNota.exibirResumo();
+        InputUtils.pausarParaContinuar();
+    }
+    public void alterarProduto(){
+        System.out.println("----------Alteração de produto----------");
+        if(produtosCadastrados.isEmpty()){
+            System.out.println("Não há produtos para alterar");
+            return;
+        }
+        listarProdutos();
+        System.out.print("Digite o número do produto que deseja alterar: ");
+        int escolha = scanner.nextInt() -1;
+        if(escolha < 0 || escolha >= produtosCadastrados.size()){
+            System.out.println("Erro de seleção");
+            return;
+        }
+        Produto produtoselecionado = produtosCadastrados.get(escolha);
+
+        System.out.println("O que deseja alterar?");
+        System.out.println("1-Codigo");
+        System.out.println("2-Nome");
+        System.out.println("3-Preço");
+        System.out.println("4-Estoque");
+        if(produtoselecionado instanceof ProdutoFisico pf){
+            System.out.println("5-Alterar Frete");
+        }else if(produtoselecionado instanceof ProdutoDigital pd){
+            System.out.println("5-Alterar link");
+        }else if(produtoselecionado instanceof ProdutoPerecivel pp){
+            System.out.println("5-Alterar validade");
+        }
+        System.out.print("Digite o número: ");
+        int opcao = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (opcao) {
+            case 1:
+                String novoCodigo = InputUtils.lerString("Digite o novo codigo: ");
+                produtoselecionado.setCodigo(novoCodigo);
+                break;
+            case 2:
+                
+                String novoNome = InputUtils.lerString("Digite o novo nome: ");
+                produtoselecionado.setNome(novoNome);
+                break;
+            case 3:
+                BigDecimal novoPreco = InputUtils.lerPreco("Digite o novo preço: ");
+                produtoselecionado.setPreco(novoPreco);
+                break;
+            case 4:
+                BigDecimal novoEstoque = InputUtils.lerPreco("Digite o novo estoque: ");
+                produtoselecionado.setEstoque(novoEstoque);
+                break;
+            case 5:
+                if(produtoselecionado instanceof ProdutoFisico pf){
+                BigDecimal novoFrete = InputUtils.lerPreco("Digite o valor do novo Frete: ");
+                pf.setFrete(novoFrete); 
+                }else if(produtoselecionado instanceof ProdutoDigital pd){
+                String novoLink = InputUtils.lerString("Digite o novo link: ");
+                pd.setLinkDoProduto(novoLink);
+                }else if(produtoselecionado instanceof ProdutoPerecivel pp){
+                LocalDate novaData = InputUtils.lerData("Digite a nova data: ");
+                pp.setdataDeValidade(novaData);
+                }
+                break;
+            default:
+                System.out.println("Opção invalida");
+                break;
+        }
+        System.out.println("Produto alterado com sucesso!");
+        InputUtils.pausarParaContinuar();
+    }
+    public void listarNotas(){
+        System.out.println("----------NOTAS EMITIDAS----------");
+        if(notasEmitidas.isEmpty()){
+            System.out.println("Nenhuma nota foi emitida ainda");
+        }else{
+            for(Nota nota: notasEmitidas){
+                nota.exibirResumo();
+            }
+        }
+        InputUtils.pausarParaContinuar();
     }
 }
-
-
+   
