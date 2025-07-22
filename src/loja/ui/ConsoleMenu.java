@@ -164,7 +164,7 @@ public class ConsoleMenu {
             }
         }
         System.out.println("\n==========-FIM DOS CLIENTES-==========\n");
-        InputUtils.pausarParaContinuar();
+        
     }
 
     public void listarProdutos(){
@@ -191,7 +191,7 @@ public class ConsoleMenu {
                 }
             }
         }
-        InputUtils.pausarParaContinuar();
+        
     }
     public void alterarCliente(){
         System.out.println("Alteração de dados do cliente");
@@ -245,6 +245,7 @@ public class ConsoleMenu {
             return;
         }
         listarClientes();
+        
         System.out.print("Digite o número do cliente: ");
         int indCliente = scanner.nextInt() - 1;
         scanner.nextLine();
@@ -258,6 +259,7 @@ public class ConsoleMenu {
         do {
             System.out.println("Adicionando a nota");
             listarProdutos();
+
             System.out.print("Digite o numero do produto que deseja adcionar: ");
             int indProduto = scanner.nextInt() - 1;
             scanner.nextLine();
@@ -294,6 +296,7 @@ public class ConsoleMenu {
             return;
         }
         listarProdutos();
+        InputUtils.pausarParaContinuar();
         System.out.print("Digite o número do produto que deseja alterar: ");
         int escolha = scanner.nextInt() -1;
         if(escolha < 0 || escolha >= produtosCadastrados.size()){
